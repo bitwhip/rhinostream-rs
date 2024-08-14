@@ -1,4 +1,4 @@
-#include <nvEncodeAPI.h>
+#include "nvEncodeAPI.h"
 
 #define MARK_FIX(req_name) const unsigned int FIXBIND_##req_name = req_name;
 

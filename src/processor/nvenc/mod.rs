@@ -232,10 +232,7 @@ impl NvEnc {
     }
 
     fn create_api_instance() -> Result<nvenc::NV_ENCODE_API_FUNCTION_LIST> {
-        let mut nv: nvenc::NV_ENCODE_API_FUNCTION_LIST = unsafe { zeroed() };
-        nv.version = nvenc::NV_ENCODE_API_FUNCTION_LIST_VER;
-        unsafe { into_err(nvenc::NvEncodeAPICreateInstance(&mut nv))?; }
-        Ok(nv)
+        nvenc::create_api_instance().map_err(|e| RhinoError::Unexpected(e.to_string()))
     }
 
     fn open_nvenc_d3d_session(nv: &nvenc::NV_ENCODE_API_FUNCTION_LIST, device: ID3D11Device4) -> Result<*mut c_void> {
@@ -370,6 +367,10 @@ impl NvEnc {
                 preset.presetCfg.encodeCodecConfig.h264Config.set_enableIntraRefresh(1);
                 preset.presetCfg.encodeCodecConfig.h264Config.intraRefreshCnt = 10;
                 preset.presetCfg.encodeCodecConfig.h264Config.intraRefreshPeriod = 500;
+
+                // @bitwhip changes
+                preset.presetCfg.encodeCodecConfig.h264Config.set_repeatSPSPPS(1);
+                preset.presetCfg.frameIntervalP = 1;
             }
             NvencCodec::HEVC => {
                 if let Some(level) = nv_conf.level {

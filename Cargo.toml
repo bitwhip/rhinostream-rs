@@ -8,11 +8,9 @@ edition = "2021"
 [build-dependencies]
 cbindgen = "0.26.0"
 
-
-[lib]
-name = "rhinostream"
-crate-type = ["cdylib"]
-
+# [lib]
+# name = "rhinostream-c"
+# crate-type = ["cdylib"]
 
 #[[bin]]
 #name = "stream_bench"
